@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_flutter_clone/src/model/user.dart';
 import 'package:instagram_flutter_clone/src/provider/user_provider.dart';
+import 'package:instagram_flutter_clone/src/service/firestore_method.dart';
 import 'package:instagram_flutter_clone/src/utils/color.dart';
 import 'package:instagram_flutter_clone/src/utils/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +20,14 @@ class AddPostPage extends StatefulWidget {
 class _AddPostPageState extends State<AddPostPage> {
   TextEditingController _descriptionController = TextEditingController();
   Uint8List? _file;
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _descriptionController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +49,7 @@ class _AddPostPageState extends State<AddPostPage> {
             appBar: AppBar(
               backgroundColor: mobileBackgroundColor,
               leading: IconButton(
-                  onPressed: () {},
+                  onPressed: clearImage,
                   icon: Icon(
                     Icons.arrow_back,
                     color: Colors.white,
@@ -55,7 +64,8 @@ class _AddPostPageState extends State<AddPostPage> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2.w),
                   child: TextButton(
-                      onPressed: () {},
+                      onPressed: () =>
+                          postImage(users!.uid, users.username, users.photoUrl),
                       child: Text(
                         "Post",
                         style: TextStyle(
@@ -69,6 +79,12 @@ class _AddPostPageState extends State<AddPostPage> {
             body: SafeArea(
                 child: Column(
               children: [
+                _isLoading
+                    ? const LinearProgressIndicator()
+                    : const Padding(
+                        padding: EdgeInsets.only(top: 0),
+                      ),
+                Divider(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -149,5 +165,44 @@ class _AddPostPageState extends State<AddPostPage> {
             ],
           );
         });
+  }
+
+  ///
+  void postImage(String uid, String userName, String profImage) async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      String res = await FirestoreMethod().uploadPost(context,
+          _descriptionController.text, _file!, uid, userName, profImage);
+
+      if (res == "success") {
+        setState(() {
+          _isLoading = false;
+        });
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("posted")));
+        clearImage();
+      } else {
+        setState(() {
+          _isLoading = false;
+        });
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(res)));
+      }
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
+    }
+  }
+
+  void clearImage() {
+    setState(() {
+      _file = null;
+    });
   }
 }
