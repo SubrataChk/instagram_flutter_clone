@@ -14,7 +14,7 @@ class StorageMethod {
         _storage.ref().child(childName).child(firebaseAuth.currentUser!.uid);
 
     if (isPost) {
-      String id = Uuid().v1();
+      String id = const Uuid().v1();
       reference = reference.child(id);
     }
 

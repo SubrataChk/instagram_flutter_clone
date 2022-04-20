@@ -1,10 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_flutter_clone/src/global/global.dart';
 
-import 'package:instagram_flutter_clone/src/screens/auth/login_screen.dart';
 import 'package:instagram_flutter_clone/src/utils/color.dart';
 
 class MobileScreenLayoutSection extends StatefulWidget {
@@ -21,14 +18,12 @@ class _MobileScreenLayoutSectionState extends State<MobileScreenLayoutSection> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     pageController = PageController();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     pageController.dispose();
   }
@@ -48,6 +43,7 @@ class _MobileScreenLayoutSectionState extends State<MobileScreenLayoutSection> {
     return Scaffold(
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
+        // ignore: sort_child_properties_last
         children: homeScreenItems,
         controller: pageController,
         onPageChanged: onPageChanged,

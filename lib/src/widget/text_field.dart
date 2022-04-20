@@ -29,7 +29,7 @@ class CustomTextFormField extends StatelessWidget {
           prefixIcon: Icon(icons),
           filled: true,
           // fillColor: Colors.black,
-          contentPadding: EdgeInsets.all(15),
+          contentPadding: const EdgeInsets.all(15),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             // borderSide: BorderSide(color: Colors.black),

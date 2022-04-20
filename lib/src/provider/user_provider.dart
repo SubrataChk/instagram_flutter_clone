@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instagram_flutter_clone/src/model/user.dart';
 import 'package:instagram_flutter_clone/src/service/auth_method.dart';

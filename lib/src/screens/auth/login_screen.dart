@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_flutter_clone/src/screens/auth/signup_screen.dart';
-import 'package:instagram_flutter_clone/src/screens/home/homepage.dart';
+
 import 'package:instagram_flutter_clone/src/utils/color.dart';
 import 'package:instagram_flutter_clone/src/widget/text_field.dart';
 import 'package:sizer/sizer.dart';
@@ -29,13 +29,12 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     email.dispose();
     password.dispose();
   }
 
-  void logIn() async {
+  void logIn(context) async {
     setState(() {
       isLoading = true;
     });
@@ -64,12 +63,13 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
     return Scaffold(
       body: SafeArea(
           child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 32),
+        padding: const EdgeInsets.symmetric(horizontal: 32),
         width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Flexible(
+              // ignore: sort_child_properties_last
               child: Container(),
               flex: 2,
             ),
@@ -94,12 +94,16 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                 icons: Icons.vpn_key),
 
             isLoading
-                ? Center(
+                ? const Center(
                     child: CircularProgressIndicator(
                       color: primaryColor,
                     ),
                   )
-                : CustomButton(title: "Log In", onTap: logIn),
+                : CustomButton(
+                    title: "Log In",
+                    onTap: () {
+                      logIn(context);
+                    }),
             Flexible(
               child: Container(),
               flex: 2,

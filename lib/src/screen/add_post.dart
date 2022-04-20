@@ -134,30 +134,31 @@ class _AddPostPageState extends State<AddPostPage> {
             title: Text("Create Post"),
             children: [
               SimpleDialogOption(
-                padding: EdgeInsets.all(20),
-                child: Text("Take a photo"),
+                padding: const EdgeInsets.all(20),
+                child: const Text("Take a photo"),
                 onPressed: () async {
                   Navigator.of(context).pop();
-                  Uint8List file = await pickImage(ImageSource.camera);
+                  Uint8List file = await pickImage(ImageSource.camera, context);
                   setState(() {
                     _file = file;
                   });
                 },
               ),
               SimpleDialogOption(
-                padding: EdgeInsets.all(20),
-                child: Text("Choose from gallery"),
+                padding: const EdgeInsets.all(20),
+                child: const Text("Choose from gallery"),
                 onPressed: () async {
                   Navigator.of(context).pop();
-                  Uint8List file = await pickImage(ImageSource.gallery);
+                  Uint8List file =
+                      await pickImage(ImageSource.gallery, context);
                   setState(() {
                     _file = file;
                   });
                 },
               ),
               SimpleDialogOption(
-                padding: EdgeInsets.all(20),
-                child: Text("Cancel"),
+                padding: const EdgeInsets.all(20),
+                child: const Text("Cancel"),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -181,13 +182,15 @@ class _AddPostPageState extends State<AddPostPage> {
         setState(() {
           _isLoading = false;
         });
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("posted")));
+            .showSnackBar(const SnackBar(content: Text("posted")));
         clearImage();
       } else {
         setState(() {
           _isLoading = false;
         });
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(res)));
       }

@@ -81,6 +81,7 @@ class AuthMethod {
 
     try {
       if (email.isNotEmpty || password.isNotEmpty) {
+        // ignore: unused_local_variable
         UserCredential userCredential = await _firebaseAuth
             .signInWithEmailAndPassword(email: email, password: password);
 
@@ -89,10 +90,10 @@ class AuthMethod {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("There is no user on this email")));
+            const SnackBar(content: Text("There is no user on this email")));
       } else if (e.code == 'wrong-password') {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Wrong password provided for that user.")));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Wrong password provided for that user.")));
       }
     } catch (e) {
       res = e.toString();

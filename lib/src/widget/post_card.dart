@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import 'package:instagram_flutter_clone/src/utils/color.dart';
 
 class PostCard extends StatefulWidget {
-  const PostCard({Key? key}) : super(key: key);
+  final snap;
+  const PostCard({Key? key, required this.snap}) : super(key: key);
 
   @override
   State<PostCard> createState() => _PostCardState();
@@ -14,7 +16,7 @@ class _PostCardState extends State<PostCard> {
   Widget build(BuildContext context) {
     return Container(
       color: mobileBackgroundColor,
-      padding: EdgeInsets.symmetric(vertical: 5.h),
+      padding: EdgeInsets.symmetric(vertical: 1.h),
       child: Column(
         children: [
           Container(
@@ -25,7 +27,7 @@ class _PostCardState extends State<PostCard> {
                 CircleAvatar(
                   radius: 5.w,
                   backgroundColor: Colors.red,
-                  // backgroundImage: NetworkImage(""),
+                  backgroundImage: NetworkImage(widget.snap["profImage"]),
                 ),
                 Expanded(
                   child: Padding(
@@ -35,7 +37,7 @@ class _PostCardState extends State<PostCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "username",
+                          widget.snap["username"],
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 12.sp),
                         )
@@ -51,12 +53,13 @@ class _PostCardState extends State<PostCard> {
                             return Dialog(
                               child: ListView(
                                 shrinkWrap: true,
-                                padding: EdgeInsets.symmetric(vertical: 16),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16),
                                 children: ["Delete"]
                                     .map((e) => InkWell(
                                           onTap: () {},
                                           child: Container(
-                                            padding: EdgeInsets.symmetric(
+                                            padding: const EdgeInsets.symmetric(
                                                 vertical: 12, horizontal: 16),
                                             child: Text(e),
                                           ),
@@ -75,7 +78,7 @@ class _PostCardState extends State<PostCard> {
             height: MediaQuery.of(context).size.height * 0.35,
             width: double.infinity,
             child: Image.network(
-              "https://images.indulgexpress.com/uploads/user/imagelibrary/2020/7/4/original/Tom-Cruise-0-scaled.jpg",
+              widget.snap["postUrl"],
               fit: BoxFit.cover,
             ),
           ),
@@ -105,7 +108,63 @@ class _PostCardState extends State<PostCard> {
                     onPressed: () {}, icon: const Icon(Icons.bookmark_border)),
               ))
             ],
-          )
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: 4.w,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DefaultTextStyle(
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle2!
+                      .copyWith(fontWeight: FontWeight.w800),
+                  child: Text(
+                    "${widget.snap["likes"].length} Likes",
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.only(top: 8),
+                  child: RichText(
+                      text: TextSpan(
+                    style: const TextStyle(color: primaryColor),
+                    children: [
+                      TextSpan(
+                          text: "${widget.snap["username"]}",
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      TextSpan(
+                          text: " Hello There",
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                    ],
+                  )),
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 1.w),
+                    child: Text(
+                      widget.snap["description"],
+                      style:
+                          const TextStyle(fontSize: 16, color: secondaryColor),
+                    ),
+                  ),
+                ),
+                Container(
+                  // padding: EdgeInsets.symmetric(vertical: 1.w),
+                  child: Text(
+                    DateFormat.yMMMd()
+                        .format(widget.snap["datePublished"].toDate()),
+                    style: TextStyle(fontSize: 16, color: secondaryColor),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

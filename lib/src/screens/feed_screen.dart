@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:instagram_flutter_clone/src/app/app_image.dart';
@@ -31,7 +32,23 @@ class _FeedScreenSectionState extends State<FeedScreenSection> {
           IconButton(onPressed: () {}, icon: Icon(Icons.messenger_rounded))
         ],
       ),
-      body: const PostCard(),
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection("posts").snapshots(),
+        builder: (context,
+            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return ListView.builder(
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  return PostCard(snap: snapshot.data!.docs[index]);
+                });
+          }
+        },
+      ),
     );
   }
 }

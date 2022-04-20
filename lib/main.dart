@@ -15,7 +15,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb) {
     await Firebase.initializeApp(
-        options: FirebaseOptions(
+        options: const FirebaseOptions(
       apiKey: "AIzaSyBSYdz6JYGM-bJEmC26SKwl_N3s8ExCKJQ",
       appId: "1:18594827998:web:17950f67d8e7f7b4bf3c4f",
       messagingSenderId: "18594827998",
@@ -60,11 +60,11 @@ class MyApp extends StatelessWidget {
                   }
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(color: primaryColor),
                   );
                 }
-                return LoginPageScreen();
+                return const LoginPageScreen();
               },
             ),
           );
