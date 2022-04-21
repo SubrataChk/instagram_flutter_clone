@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_flutter_clone/src/animation/like_animation.dart';
+import 'package:instagram_flutter_clone/src/model/user.dart';
+import 'package:instagram_flutter_clone/src/provider/user_provider.dart';
+import 'package:instagram_flutter_clone/src/service/firestore_method.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:instagram_flutter_clone/src/utils/color.dart';
 
@@ -12,8 +17,10 @@ class PostCard extends StatefulWidget {
 }
 
 class _PostCardState extends State<PostCard> {
+  bool isLikeAnimating = false;
   @override
   Widget build(BuildContext context) {
+    UserModel? users = Provider.of<UserProvider>(context).getUser;
     return Container(
       color: mobileBackgroundColor,
       padding: EdgeInsets.symmetric(vertical: 1.h),
@@ -74,23 +81,67 @@ class _PostCardState extends State<PostCard> {
             ),
           ),
           //!
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.35,
-            width: double.infinity,
-            child: Image.network(
-              widget.snap["postUrl"],
-              fit: BoxFit.cover,
+          GestureDetector(
+            onDoubleTap: () async {
+              await FirestoreMethod().likePost(
+                  widget.snap["postId"], users!.uid, widget.snap["likes"]);
+              setState(() {
+                isLikeAnimating = true;
+              });
+            },
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.35,
+                  width: double.infinity,
+                  child: Image.network(
+                    widget.snap["postUrl"],
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 200),
+                  opacity: isLikeAnimating ? 1 : 0,
+                  child: LikeAnimation(
+                    child: Icon(
+                      Icons.favorite,
+                      size: 20.w,
+                      color: Colors.red,
+                    ),
+                    isAnimating: isLikeAnimating,
+                    duration: const Duration(milliseconds: 400),
+                    onEnd: () {
+                      setState(() {
+                        isLikeAnimating = false;
+                      });
+                    },
+                  ),
+                )
+              ],
             ),
           ),
           //!
           Row(
             children: [
-              IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                  )),
+              LikeAnimation(
+                  isAnimating:
+                      widget.snap["likes"].contains(widget.snap["uid"]),
+                  // isAnimating: widget.snap["likes"].contains(users!.uid),
+                  smallLikes: true,
+                  child: IconButton(
+                      onPressed: () async {
+                        await FirestoreMethod().likePost(widget.snap["postId"],
+                            users!.uid, widget.snap["likes"]);
+                      },
+                      icon: widget.snap["likes"].contains(widget.snap["uid"])
+                          ? const Icon(
+                              Icons.favorite,
+                              color: Colors.red,
+                            )
+                          : const Icon(
+                              Icons.favorite_border,
+                            ))),
               IconButton(
                   onPressed: () {},
                   icon: const Icon(
