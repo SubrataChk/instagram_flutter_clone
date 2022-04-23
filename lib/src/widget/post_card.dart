@@ -148,7 +148,9 @@ class _PostCardState extends State<PostCard> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => CommentSection()));
+                            builder: (context) => CommentSection(
+                                  snap: widget.snap,
+                                )));
                   },
                   icon: const Icon(
                     Icons.comment,
@@ -195,7 +197,7 @@ class _PostCardState extends State<PostCard> {
                           text: "${widget.snap["username"]}",
                           style: TextStyle(fontWeight: FontWeight.bold)),
                       TextSpan(
-                          text: " Hello There",
+                          text: "${widget.snap["description"]}",
                           style: TextStyle(fontWeight: FontWeight.bold)),
                     ],
                   )),
