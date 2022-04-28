@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_flutter_clone/src/global/global.dart';
 import 'package:instagram_flutter_clone/src/model/user.dart';
 import 'package:instagram_flutter_clone/src/provider/user_provider.dart';
 import 'package:instagram_flutter_clone/src/utils/color.dart';
@@ -7,13 +9,40 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  final String uid;
+  const ProfileScreen({Key? key, required this.uid}) : super(key: key);
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  var userData = {};
+  var postLength = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  getData() async {
+    var userSnap = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(widget.uid)
+        .get();
+    userData = userSnap.data()!;
+
+    var postSnap = await FirebaseFirestore.instance
+        .collection("posts")
+        .where("uid", isEqualTo: firebaseAuth.currentUser!.uid)
+        .get();
+
+    postLength = postSnap.docs.length;
+
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     UserModel? users = Provider.of<UserProvider>(context).getUser;
@@ -22,7 +51,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: mobileBackgroundColor,
-        title: Text(users!.username),
+        title: Text(userData["username"].toString()),
       ),
       body: ListView(
         children: [
@@ -34,7 +63,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     CircleAvatar(
                       radius: 10.w,
-                      backgroundImage: NetworkImage(users.photoUrl),
+                      backgroundImage:
+                          NetworkImage(userData["photoUrl"].toString()),
                     ),
                     Expanded(
                       flex: 1,
@@ -44,7 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              buildStateDetails(20, "Posts"),
+                              buildStateDetails(postLength, "Posts"),
                               buildStateDetails(1203, "Followers"),
                               buildStateDetails(20, "Following"),
                             ],
@@ -64,6 +94,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ],
                 ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.only(top: 1.h),
+                  child: Text(
+                    userData["username"].toString(),
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15.sp),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    userData["bio"].toString(),
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Divider(
+                  color: Colors.grey,
+                )
               ],
             ),
           ),
