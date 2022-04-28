@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_flutter_clone/src/screen/add_post.dart';
 import 'package:instagram_flutter_clone/src/screens/feed_screen.dart';
+import 'package:instagram_flutter_clone/src/screens/profile/profile_screen.dart';
 import 'package:instagram_flutter_clone/src/screens/search/search.dart';
 
 const homeScreenItems = [
@@ -8,5 +9,5 @@ const homeScreenItems = [
   SearchSection(),
   AddPostPage(),
   Text("Feed"),
-  Text("Feed"),
+  ProfileScreen(),
 ];
