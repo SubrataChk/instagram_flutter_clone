@@ -66,53 +66,53 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       backgroundImage:
                           NetworkImage(userData["photoUrl"].toString()),
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              buildStateDetails(postLength, "Posts"),
-                              buildStateDetails(1203, "Followers"),
-                              buildStateDetails(20, "Following"),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              FollowButton(
-                                  backgroundColor: Colors.blue,
-                                  textColor: mobileBackgroundColor,
-                                  title: "Edit Profile",
-                                  borderColor: Colors.grey)
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
+                    // Expanded(
+                    //   flex: 1,
+                    //   child: Column(
+                    //     children: [
+                    //       // Row(
+                    //       //   mainAxisSize: MainAxisSize.max,
+                    //       //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //       //   children: [
+                    //       //     buildStateDetails(postLength, "Posts"),
+                    //       //     buildStateDetails(1203, "Followers"),
+                    //       //     buildStateDetails(20, "Following"),
+                    //       //   ],
+                    //       // ),
+                    //       // Row(
+                    //       //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //       //   children: [
+                    //       //     FollowButton(
+                    //       //         backgroundColor: Colors.blue,
+                    //       //         textColor: mobileBackgroundColor,
+                    //       //         title: "Edit Profile",
+                    //       //         borderColor: Colors.grey)
+                    //       //   ],
+                    //       // )
+                    //     ],
+                    //   ),
+                    // ),
                   ],
                 ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.only(top: 1.h),
-                  child: Text(
-                    userData["username"].toString(),
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15.sp),
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    userData["bio"].toString(),
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Divider(
-                  color: Colors.grey,
-                )
+                // Container(
+                //   alignment: Alignment.centerLeft,
+                //   padding: EdgeInsets.only(top: 1.h),
+                //   child: Text(
+                //     userData["username"].toString(),
+                //     style:
+                //         TextStyle(fontWeight: FontWeight.bold, fontSize: 15.sp),
+                //   ),
+                // ),
+                // Container(
+                //   alignment: Alignment.centerLeft,
+                //   child: Text(
+                //     userData["bio"].toString(),
+                //     style: TextStyle(fontWeight: FontWeight.bold),
+                //   ),
+                // ),
+                // Divider(
+                //   color: Colors.grey,
+                // )
               ],
             ),
           ),
